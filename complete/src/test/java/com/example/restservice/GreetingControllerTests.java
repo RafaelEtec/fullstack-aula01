@@ -50,5 +50,6 @@ public class GreetingControllerTests {
 				.andDo(print()) // Imprime a requisição e a resposta no console
 				.andExpect(status().isOk()) // Verifica se o status da resposta é 200 (OK)
 				.andExpect(jsonPath("$.content").value("Hello, Spring Community!")); // Verifica se o JSON contém "Hello, Spring Community!" em "content"
+
 	}
 }

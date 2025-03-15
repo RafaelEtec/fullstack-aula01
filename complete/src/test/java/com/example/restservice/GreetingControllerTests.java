@@ -27,28 +27,33 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest // Anotação que indica que este é um teste de integração do Spring Boot. Carrega o contexto completo da aplicação.
-@AutoConfigureMockMvc // Configura automaticamente o MockMvc para testes de controladores sem precisar de um servidor HTTP real.
-public class GreetingControllerTests {
+@SpringBootTest // Indica que a classe de teste usa o Spring Boot para carregar o contexto da aplicação.
+@AutoConfigureMockMvc // Configura automaticamente o MockMvc, que será usado para simular requisições HTTP.
+public class GreetingControllerTests { // Define a classe de teste para o controlador GreetingController.
 
-	@Autowired // Injeta automaticamente uma instância de MockMvc para simular requisições HTTP.
-	private MockMvc mockMvc;
+	@Autowired // Injeta automaticamente a dependência do MockMvc configurado pelo Spring.
+	private MockMvc mockMvc; // MockMvc é usado para simular requisições HTTP e validar respostas.
 
-	@Test // Anotação que indica que este método é um teste.
+	@Test // Indica que este método é um teste e será executado ao rodar os testes.
 	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
-		// Simula uma requisição GET para o endpoint "/greeting".
-		this.mockMvc.perform(get("/greeting"))
-				.andDo(print()) // Imprime detalhes da requisição e resposta no console (útil para depuração).
-				.andExpect(status().isOk()) // Verifica se o status da resposta é HTTP 200 (OK).
-				.andExpect(jsonPath("$.content").value("Hello, World!")); // Verifica se o campo "content" no JSON da resposta contém "Hello, World!".
+		// Método que testa o endpoint /greeting sem parâmetros.
+
+		this.mockMvc.perform(get("/greeting")) // Simula uma requisição HTTP GET no endpoint "/greeting".
+				.andDo(print()) // Imprime os detalhes da requisição e resposta no console (útil para depuração).
+				.andExpect(status().isOk()) // Verifica se o status HTTP da resposta é 200 OK.
+				.andExpect(jsonPath("$.content").value("Hello, World!"));
+		// Verifica se o campo "content" no JSON da resposta tem o valor "Hello, World!".
 	}
 
-	@Test // Anotação que indica que este método é um teste.
+	@Test // Outro método de teste.
 	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
-		// Simula uma requisição GET para o endpoint "/greeting" com o parâmetro "name" definido como "Spring Community".
+		// Testa o endpoint /greeting com o parâmetro "name".
+
 		this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
-				.andDo(print()) // Imprime detalhes da requisição e resposta no console.
-				.andExpect(status().isOk()) // Verifica se o status da resposta é HTTP 200 (OK).
-				.andExpect(jsonPath("$.content").value("Hello, Spring Community!")); // Verifica se o campo "content" no JSON da resposta contém "Hello, Spring Community!".
+				// Simula uma requisição HTTP GET no endpoint "/greeting" com o parâmetro "name=Spring Community".
+				.andDo(print()) // Imprime os detalhes da requisição e resposta no console.
+				.andExpect(status().isOk()) // Verifica se o status HTTP da resposta é 200 OK.
+				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+		// Verifica se o campo "content" no JSON da resposta tem o valor "Hello, Spring Community!".
 	}
 }

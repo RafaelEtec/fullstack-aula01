@@ -27,33 +27,29 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest // Indica que esta é uma classe de teste de integração do Spring Boot
+@AutoConfigureMockMvc // Configura automaticamente o MockMvc para simular requisições HTTP
 public class GreetingControllerTests {
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mockMvc; // Injeta uma instância do MockMvc para realizar requisições HTTP simuladas
 
-	/**
-	 * Testa o endpoint "/greeting" sem fornecer parâmetros.
-	 * Deve retornar a mensagem padrão "Hello, World!" no campo "content" do JSON de resposta.
-	 */
-	@Test
+	@Test // Indica que este é um método de teste JUnit
 	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
-		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, World!"));
+		this.mockMvc.perform(get("/greeting")) // Simula uma requisição HTTP GET para "/greeting"
+				.andDo(print()) // Imprime a requisição e a resposta no console para depuração
+				.andExpect(status().isOk()) // Verifica se o status da resposta é 200 (OK)
+				.andExpect(jsonPath("$.content").value("Hello, World!")); // Verifica se o JSON contém "Hello, World!" em "content"
 	}
 
-	/**
-	 * Testa o endpoint "/greeting" fornecendo um parâmetro "name".
-	 * Deve retornar uma mensagem personalizada, incluindo o nome fornecido na resposta.
-	 */
-	@Test
+	@Test // Indica que este é um método de teste JUnit
 	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
 
-		this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
-				.andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+		this.mockMvc.perform(get("/greeting").param("name", "Spring Community")) // Simula GET para "/greeting" com parâmetro "name"
+				.andDo(print()) // Imprime a requisição e a resposta no console
+				.andExpect(status().isOk()) // Verifica se o status da resposta é 200 (OK)
+				.andExpect(jsonPath("$.content").value("Hello, Spring Community!")); // Verifica se o JSON contém "Hello, Spring Community!" em "content"
+
 	}
 }

@@ -34,20 +34,24 @@ public class GreetingControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 
+	/**
+	 * Testa o endpoint "/greeting" sem fornecer parâmetros.
+	 * Deve retornar a mensagem padrão "Hello, World!" no campo "content" do JSON de resposta.
+	 */
 	@Test
 	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
-		// Mock para /greeting
-		// Irá retornar a mensagem 'default'
 		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.content").value("Hello, World!"));
 	}
 
+	/**
+	 * Testa o endpoint "/greeting" fornecendo um parâmetro "name".
+	 * Deve retornar uma mensagem personalizada, incluindo o nome fornecido na resposta.
+	 */
 	@Test
 	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
 
-		// Mock para /greeting?name=
-		// Irá retornar a mensagem + parâmetro informado
 		this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
